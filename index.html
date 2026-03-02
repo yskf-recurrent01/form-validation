@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>フォームバリデーションのサンプル</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container py-3">
+		<h1 class="text-center mb-5">新規会員登録</h1>
+		<form action="#" method="post" id="form">
+			<div class="row mb-3">
+				<div class="col-md mb-3 mb-md-0">
+					<label for="name1" class="form-label">姓</label>
+					<input type="text" id="name1" class="form-control" required>
+				</div>
+				<div class="col-md">
+					<label for="name2" class="form-label">名</label>
+					<input type="text" id="name2" class="form-control" required>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-md mb-3 mb-md-0">
+					<label for="kana1" class="form-label">セイ</label>
+					<input type="text" id="kana1" class="form-control">
+				</div>
+				<div class="col-md">
+					<label for="kana2" class="form-label">メイ</label>
+					<input type="text" id="kana2" class="form-control">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-md">
+					<label for="email" class="form-label">メールアドレス</label>
+					<input type="email" id="
+                    email" class="form-control" required>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-md">
+					<label for="email" class="form-label">パスワード</label>
+					<input type="password" id="password" class="form-control" required>
+					<div class="form-text">
+						8文字以上24文字以内。使用できる文字は半角英数、!、#、$、_(アンダースコア)、-(ハイフン)のみ
+					</div>
+				</div>
+			</div>
+			<div class="row mb-3 align-items-end">
+				<div class="col col-md-4 col-lg-3">
+					<label for="email" class="form-label">郵便番号</label>
+					<input type="text" id="postcode" class="form-control" maxlength="7" required>
+				</div>
+				<div class="col col-md-2">
+					<button type="button" id="btn-postcode" class="btn btn-primary">住所検索</button>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-6 col-md-4 col-lg-3">
+					<p class="form-label">都道府県</p>
+					<select class="form-select" id="pref">
+						<option hidden>都道府県を選択</option>
+					</select>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<label for="address1" class="form-label">市区町村</label>
+					<input type="text" id="address1" name="address1" class="form-control">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col">
+					<label for="address2" class="form-label">番地・建物名</label>
+					<input type="text" id="address2" name="address2" class="form-control">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<p class="form-label">プランを選択</p>
+					<select class="form-select">
+						<option value="1">プレミアム</option>
+						<option value="2">ビジネス</option>
+						<option value="3" selected>ベーシック</option>
+						<option value="4">フリー</option>
+					</select>
+				</div>
+			</div>
+			<div class="my-5 row justify-content-center">
+				<div class="form-check col-6 ">
+					<input type="checkbox" class="form-check-input" name="privacy" id="privacy"><label for="privacy"><a
+							href="#">プライバシーポリシー</a> に同意する</label>
+				</div>
+			</div>
+			<div class="row mb-5 justify-content-center">
+				<div class="col-3"><input id="submit" type="submit" value="登録する" class="btn btn-secondary btn-lg"
+						disabled></div>
+			</div>
+		</form>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+	<script type="module" src="./js/validate.js"></script>
+</body>
+
+</html>
