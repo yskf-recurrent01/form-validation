@@ -1,17 +1,22 @@
 import prefData from './pref.js';
 
-console.log(prefData);
-
 // 入力欄を取得
 const kanaInputArray = document.querySelectorAll('[id^="kana"]');
 const passInput = document.getElementById('password');
 const privacyCheck = document.getElementById('privacy');
-const submitBtn = doument.getElementById('submit');
+const submitBtn = document.getElementById('submit');
+const postcodeInput = document.getElementById('postcode');
+const prefSelect = document.getElementById('pref');
+
+prefData.forEach(pref=>{
+    prefSelect.innerHTML += `<option value="${pref.code}">${pref.pref}</option>`;
+});
 
 // フォーム全体を取得
 const form = document.getElementById('form');
 
 // 正規表現のパターンを設定
+const postcodePattern = /^[0-9]{7}$/;
 const passPattern = /^[a-zA-Z0-9!#$_-]{8,24}$/; //パスワード
 const kanaPattern = /^[\p{Script=Katakana}\u30FC]+$/u; //フリガナ
 
@@ -30,6 +35,12 @@ validateInputValue({
     pattern: passPattern,
     msg: 'パスワードが不正です。'
 });
+
+validateInputValue({
+    target: postcodeInput,
+    pattern: postcodePattern,
+    msg:'郵便番号は半角数字(7桁)ハイフンなしで入力してください。'
+})
 
 privacyCheck.addEventListener('change', toggleSubmitBtn);
 
