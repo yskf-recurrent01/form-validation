@@ -6,17 +6,17 @@ const plans = [
     },
     {
         id: 2,
-        name: 'ベーシック',
+        name: 'スターター',
         price: 500,
     },
     {
         id: 3,
-        name: 'ビジネス',
-        price: 3600,
+        name: 'ベーシック',
+        price: 1800,
     },
     {
         id: 4,
-        name: 'エンタープライズ',
+        name: 'プレミアム',
         price: 22000,
     },
 ];
