@@ -1,14 +1,16 @@
 import prefData from './pref.js';
 
-// 入力欄を取得
+// 要素を取得
 const kanaInputArray = document.querySelectorAll('[id^="kana"]');
 const passInput = document.getElementById('password');
 const privacyCheck = document.getElementById('privacy');
 const submitBtn = document.getElementById('submit');
 const postcodeInput = document.getElementById('postcode');
+const addressInputArray = document.querySelectorAll('[id^="address"]');
+const postcodeBtn = document.getElementById('btn-postcode');
 const prefSelect = document.getElementById('pref');
 
-prefData.forEach(pref=>{
+prefData.forEach(pref => {
     prefSelect.innerHTML += `<option value="${pref.code}">${pref.pref}</option>`;
 });
 
@@ -39,10 +41,40 @@ validateInputValue({
 validateInputValue({
     target: postcodeInput,
     pattern: postcodePattern,
-    msg:'郵便番号は半角数字(7桁)ハイフンなしで入力してください。'
+    msg: '郵便番号は半角数字(7桁)ハイフンなしで入力してください。'
 })
 
 privacyCheck.addEventListener('change', toggleSubmitBtn);
+
+postcodeBtn.addEventListener('click', async () => {
+    addressInputArray.forEach(input => {
+        input.disabled = true;
+        input.value = '検索中…';
+    });
+    const postcode = postcodeInput.value;
+    const addressData = await getAddress(postcode)
+    if (addressData.results !== null) {
+        const prefCode = addressData.results[0].prefcode;
+        const addressDataArray = [
+            addressData.results[0].address2, addressData.results[0].address3
+        ];
+        prefSelect.value = prefCode;
+        addressInputArray.forEach((input, i) => {
+            input.value = addressDataArray[i];
+            input.disabled = false;
+        });
+    } else {
+        alert('住所が見つかりませんでした。');
+        addressInputArray.forEach((input) => {
+            input.value = '';
+            input.disabled = false;
+        });
+    }
+
+
+
+
+});
 
 
 /**
@@ -70,6 +102,8 @@ function validateInputValue({ target, pattern, msg }) {
     });
 }
 
+
+
 function toggleSubmitBtn() {
     // フォーム全体でバリデーションが通っているかチェック
     const isFormValid = form.checkValidity();
@@ -81,4 +115,41 @@ function toggleSubmitBtn() {
     submitBtn.disabled = !isSubmitActive;
     submitBtn.classList.toggle('btn-primary', isSubmitActive);
     submitBtn.classList.toggle('btn-secondary', !isSubmitActive);
+}
+
+
+/**
+* 郵便番号から住所情報を取得します（zipcloud APIを使用）。
+ * * @async
+ * @param {string} postcode - ハイフンなしの7桁の郵便番号
+ * @returns {Promise<Object|boolean>} 成功時は住所オブジェクトを含むJSON、失敗時はfalseを返します。
+ * @property {number} status - レスポンスステータス（200など）
+ * @property {string|null} message - エラーメッセージ
+ * @property {Array<{
+ * address1: string, // 都道府県名
+ * address2: string, // 市区町村名
+ * address3: string, // 町域名
+ * kana1: string,    // 都道府県名カナ
+ * kana2: string,    // 市区町村名カナ
+ * kana3: string,    // 町域名カナ
+ * prefcode: string, // 都道府県コード
+ * zipcode: string   // 郵便番号
+ * }>|null} results - 住所検索結果の配列
+ */
+
+async function getAddress(postcode) {
+    const endpoint = 'https://zipcloud.ibsnet.co.jp/api/search';
+    try {
+        const res = await fetch(endpoint + '?zipcode=' + postcode);
+        if (res.status === 200) {
+            const json = await res.json();
+            return json
+        } else {
+            return false;
+        }
+
+    } catch (e) {
+        alert('住所データの取得に失敗しました:', e);
+        return false;
+    }
 }
