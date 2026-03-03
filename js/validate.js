@@ -1,4 +1,5 @@
 import prefData from './pref.js';
+import plansData from './plans.js';
 
 // 要素を取得
 const kanaInputArray = document.querySelectorAll('[id^="kana"]');
@@ -12,6 +13,20 @@ const prefSelect = document.getElementById('pref');
 
 prefData.forEach(pref => {
     prefSelect.innerHTML += `<option value="${pref.code}">${pref.pref}</option>`;
+});
+
+const plansSelect = document.getElementById('plans');
+
+plansData.forEach(plan => {
+    plansSelect.innerHTML += `<option value="${plan.id}">${plan.name}</option>`;
+});
+
+plansSelect.addEventListener('change',()=>{
+    const selectedPlanId = parseInt(plansSelect.value);
+    const TAX_RATE = 1.1;
+    const basePrice = plansData.find(plan => plan.id === selectedPlanId).price;
+    const totalPrice = basePrice * TAX_RATE;
+    document.getElementById('price').innerText = `${totalPrice.toLocaleString()}円/月(税込)`;
 });
 
 // フォーム全体を取得
